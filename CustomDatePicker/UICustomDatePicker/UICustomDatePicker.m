@@ -13,6 +13,7 @@
 #import "NSYearComponent.h"
 #import "NSDayComponent.h"
 #import "NSObject+Array.h"
+#import "NSString+Date.h"
 
 
 @interface UICustomDatePicker()<UIPickerViewDelegate, UIPickerViewDataSource>
@@ -135,19 +136,25 @@
 
 -(void) initComponent {
     self.componentOrderArray = [self getComponentsWithOption:self.option andOrder:self.order];
+    if (self.minDate == nil) {
+        self.minDate = [[NSString stringWithFormat:@"01/Jun/0001"] dateValueForFormatString:@"dd/MMM/yyyy"];
+    }
+    if (self.maxDate == nil) {
+        self.maxDate = [[NSString stringWithFormat:@"31/Dec/9999"] dateValueForFormatString:@"dd/MMM/yyyy"];
+    }
     for ( NSBaseDateComponent *component in self.componentOrderArray ) {
         [component setupComponentForCurrentSelectedDate:self.currentDate minDate:self.minDate maxDate:self.maxDate];
     }
     
     self.componentsWidth = [self getComponentsWidth:self.componentOrderArray];
     self.componentsHeight = [self getComponentsHeight:self.componentOrderArray];
+    
 }
 
 - (NSArray *) getComponentsWidth:(NSArray *) components {
     NSMutableArray *array  = [NSMutableArray array];
     CGFloat totalWidth = 0.0;
     for ( NSBaseDateComponent *component in components ) {
-        [component setupComponentForCurrentSelectedDate:self.currentDate minDate:self.minDate maxDate:self.maxDate];
         CGFloat width = [self getWidthForComponent:component];
         totalWidth += width;
         [array addObject:[[NSNumber alloc] initWithFloat:width]];
@@ -167,7 +174,6 @@
 - (NSArray *) getComponentsHeight:(NSArray *) components {
     NSMutableArray *array  = [NSMutableArray array];
     for ( NSBaseDateComponent *component in components ) {
-        [component setupComponentForCurrentSelectedDate:self.currentDate minDate:self.minDate maxDate:self.maxDate];
         [array addObject:[[NSNumber alloc] initWithFloat:[self getHeightForComponent:component]]];
     }
     
@@ -240,6 +246,11 @@
 -(void) reload {
     [self initComponent];
     [self.pickerView reloadAllComponents];
+    NSUInteger index = 0;
+    for (NSBaseDateComponent *component in self.componentOrderArray) {
+        [self.pickerView selectRow:[component getIndexForDate:self.currentDate] inComponent:index animated:NO];
+        ++index;
+    }
     
     [self updateDate:self.currentDate forSelectedComponent:nil];
     

@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initCustomDatePicker:self.customDatePicker withOption:NSCustomDatePickerOptionLongMonth | NSCustomDatePickerOptionYear | NSCustomDatePickerOptionDay andOrder:NSCustomDatePickerOrderDayMonthAndYear];
-    [self initCustomDatePicker:self.customDatePicker2 withOption:NSCustomDatePickerOptionLongMonth | NSCustomDatePickerOptionYear  andOrder:NSCustomDatePickerOrderDayMonthAndYear];
+    [self initCustomDatePicker:self.customDatePicker2 withOption:NSCustomDatePickerOptionLongMonth | NSCustomDatePickerOptionYear  andOrder:NSCustomDatePickerOrderMonthDayAndYear];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,7 +39,7 @@
 }
 
 
-- (IBAction)didCustomeDatePickerValueChanged:(id)sender {
+- (IBAction)didCustomDatePickerValueChanged:(id)sender {
     NSLog(@"%@",[(UICustomDatePicker *)sender currentDate]);
 }
 

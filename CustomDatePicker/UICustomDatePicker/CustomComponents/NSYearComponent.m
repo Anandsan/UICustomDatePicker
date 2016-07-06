@@ -63,7 +63,7 @@
 }
 
 - (NSString *) getStringForValue:(NSUInteger) value {
-    return [NSString stringWithFormat:@"%04lu", (long) value];
+    return [NSString stringWithFormat:@"%4lu", (long) value];
 }
 
 - (NSDate *) updateDate:(NSDate *) date {
